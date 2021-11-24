@@ -7,7 +7,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity // Le indicamos a la clase que es una entidad, para administrarla y realizar las relaciones 
-@Table(name="puntajes") // Para nombrar la tabla
+@Table(name="puntajes") // Nombrar tabla de la bd
 public class Puntajes{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // autoincremental

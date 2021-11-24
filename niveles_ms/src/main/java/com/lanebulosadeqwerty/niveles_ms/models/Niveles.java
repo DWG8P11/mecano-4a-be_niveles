@@ -6,7 +6,7 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity 
-@Table(name="nivel") // Para nombre la tabla de la bd
+@Table(name="nivel") // Nombrar tabla de la bd
 public class Niveles{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

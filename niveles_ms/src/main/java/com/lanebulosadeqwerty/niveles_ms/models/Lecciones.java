@@ -4,7 +4,7 @@ import javax.persistence.*;
 import org.springframework.data.annotation.Id;
 
 @Entity 
-@Table(name="leccion") // Para nombre la tabla de la bd
+@Table(name="leccion") // Nombrar tabla de la bd
 public class Lecciones {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

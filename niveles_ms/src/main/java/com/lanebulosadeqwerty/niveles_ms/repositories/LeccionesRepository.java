@@ -6,7 +6,6 @@ import java.util.List;
 
 
 public interface LeccionesRepository extends MongoRepository<Lecciones, String> {
-    // -- lecciones..
     List<Lecciones> findByLeccionesOrigin (String leccionesOrigin);
     List<Lecciones> findByLeccionesDestiny (String leccionesDestiny);
 }
