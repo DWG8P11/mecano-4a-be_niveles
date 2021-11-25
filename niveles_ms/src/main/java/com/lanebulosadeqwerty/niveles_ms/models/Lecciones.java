@@ -8,8 +8,8 @@ import java.util.List;
 @Table(name="leccion") // Nombrar tabla de la bd
 public class Lecciones {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private String id;
     private String titulo;
     private Integer n_leccion;
     private String texto;
@@ -23,7 +23,7 @@ public class Lecciones {
 
     @ManyToOne
     @JoinColumn(name = "id")
-    private Niveles nivel; 
+    private Integer nivel; 
 
     // @OneToMany(mappedBy = "id")//, cascade = CascadeType.ALL)
     // private List<Puntajes> puntaje;
@@ -32,28 +32,8 @@ public class Lecciones {
     private Boolean ignorarTildes;
     private Boolean ignorarDieres;
 
-
-    public Lecciones(Integer id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
-                     Integer mini1, Integer mini2,Integer mini3, Integer mini4, Niveles nivel) {
-        this.id=id;                        
-        this.titulo = titulo;
-        this.n_leccion = n_leccion;
-        this.texto = texto;
-        this.teclas = teclas;
-        this.imagen=imagen;
-        this.mini1 = mini1;
-        this.mini2 = mini2;
-        this.mini3 = mini3;
-        this.mini4 = mini4;
-        this.nivel = nivel;
-
-        this.ignorarMayus = false;
-        this.ignorarTildes = false;
-        this.ignorarDieres = false;
-    }
-
-    public Lecciones(Integer id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
-                     Integer mini1, Integer mini2,Integer mini3, Integer mini4, Niveles nivel, 
+    public Lecciones(String id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
+                     Integer mini1, Integer mini2,Integer mini3, Integer mini4, Integer nivel, 
                      Boolean ignorarMayus, Boolean ignorarTildes, Boolean ignorarDieres) {
         this.id=id;                        
         this.titulo = titulo;
@@ -75,11 +55,11 @@ public class Lecciones {
     // public Lecciones() {}
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
         }
         
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
         }
 
@@ -155,11 +135,11 @@ public class Lecciones {
         this.mini4 = mini4;
     }
 
-    public Niveles getNivel() {
+    public Integer getNivel() {
         return nivel;
     }
 
-    public void setNivel(Niveles nivel) {
+    public void setNivel(Integer nivel) {
         this.nivel = nivel;
     }
 

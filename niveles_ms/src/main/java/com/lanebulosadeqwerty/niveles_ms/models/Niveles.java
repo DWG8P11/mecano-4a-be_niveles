@@ -1,7 +1,7 @@
 package com.lanebulosadeqwerty.niveles_ms.models;
 import org.springframework.data.annotation.Id;
 
-import java.util.Collection; // List?
+// import java.util.Collection; // List?
 
 import javax.persistence.*;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name="nivel") // Nombrar tabla de la bd
 public class Niveles{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String nombre;
     private String descripcion;
