@@ -8,7 +8,6 @@ import java.util.List;
 @Table(name="leccion") // Nombrar tabla de la bd
 public class Lecciones {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String id;
     private String titulo;
     private Integer n_leccion;

@@ -10,8 +10,7 @@ import javax.persistence.*;
 @Table(name="puntajes") // Nombrar tabla de la bd
 public class Puntajes{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // autoincremental
-    private Integer id;
+    private String id;
     private String usuario; // Nombre de usuario
     private double precision;
     private Integer cpm_t;
@@ -19,12 +18,13 @@ public class Puntajes{
     private Time tiempo;
     private Date fecha;
 
-    // @OneToOne
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Lecciones leccion;
+    // // @OneToOne
+    // @ManyToOne
+    // @JoinColumn(name = "id")
+    // private String leccion_id;
+    private String leccion_id;
 
-    public Puntajes(Integer id, String usuario,double precision,Integer cpm_t, Integer cpm_e, Time tiempo, Date fecha, Lecciones leccion) {
+    public Puntajes(String id, String usuario,double precision,Integer cpm_t, Integer cpm_e, Time tiempo, Date fecha, String leccion_id) {
         this.id = id;
         this.precision = precision;
         this.usuario = usuario;
@@ -32,15 +32,15 @@ public class Puntajes{
         this.cpm_e = cpm_e;
         this.tiempo = tiempo;
         this.fecha = fecha;
-        this.leccion = leccion;
+        this.leccion_id = leccion_id;
         }
     public Puntajes() {}
 
-    public Integer getId() {
+    public String getId() {
         return id;
         }
         
-    public void setNombre(Integer id) {
+    public void setNombre(String id) {
         this.id = id;
         }
 
@@ -92,12 +92,12 @@ public class Puntajes{
         this.fecha = fecha;
         }  
 
-    public Lecciones getLeccion() {
-        return this.leccion;
+    public String getleccion_id() {
+        return this.leccion_id;
     }
 
-    public void setLeccion(Lecciones leccion) {
-        this.leccion = leccion;
+    public void setleccion_id(String leccion_id) {
+        this.leccion_id = leccion_id;
     }
 
 }
