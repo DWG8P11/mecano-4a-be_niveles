@@ -12,18 +12,19 @@ public class Puntajes{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // autoincremental
     private Integer id;
-    private String usuario;
+    private String usuario; // Nombre de usuario
     private double precision;
     private Integer cpm_t;
     private Integer cpm_e;
     private Time tiempo;
     private Date fecha;
 
-    @OneToOne
+    // @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id")
-    private Lecciones lecciones;
+    private Lecciones leccion;
 
-    public Puntajes(Integer id, String usuario,double precision,Integer cpm_t, Integer cpm_e, Time tiempo, Date fecha) {
+    public Puntajes(Integer id, String usuario,double precision,Integer cpm_t, Integer cpm_e, Time tiempo, Date fecha, Lecciones leccion) {
         this.id = id;
         this.precision = precision;
         this.usuario = usuario;
@@ -31,6 +32,7 @@ public class Puntajes{
         this.cpm_e = cpm_e;
         this.tiempo = tiempo;
         this.fecha = fecha;
+        this.leccion = leccion;
         }
     public Puntajes() {}
 
@@ -90,6 +92,12 @@ public class Puntajes{
         this.fecha = fecha;
         }  
 
+    public Lecciones getLeccion() {
+        return this.leccion;
+    }
 
+    public void setLeccion(Lecciones leccion) {
+        this.leccion = leccion;
+    }
 
 }

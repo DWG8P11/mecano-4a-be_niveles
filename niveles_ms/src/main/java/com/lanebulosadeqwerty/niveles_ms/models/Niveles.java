@@ -1,7 +1,7 @@
 package com.lanebulosadeqwerty.niveles_ms.models;
 import org.springframework.data.annotation.Id;
 
-import java.util.Collection;
+import java.util.Collection; // List?
 
 import javax.persistence.*;
 
@@ -15,28 +15,28 @@ public class Niveles{
     private String descripcion;
     private byte imagen;
 
-    @OneToMany(mappedBy = "id")
-    private Collection<Lecciones> lecciones; 
+    // @OneToMany(mappedBy = "id")
+    // private Collection<Lecciones> lecciones; 
 
-    public Niveles(Integer id,String nombre, String descripcion, byte imagen) {
+    public Niveles(Integer id, String nombre, String descripcion, byte imagen) {
         this.id=id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
-        }
-        public Niveles() {}
+    }
+        
 
     public Integer getId() {
         return id;
-        }
+    }
     
-    public void setNombre(Integer id) {
+    public void setId(Integer id) {
          this.id = id;
-        }
+    }
     
     public String getNombre() {
         return nombre;
-        }
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
