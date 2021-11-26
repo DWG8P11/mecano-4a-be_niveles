@@ -3,6 +3,8 @@ package com.lanebulosadeqwerty.exceptions;
 /*
  * Si se trata de crear o modificar un nivel menos a 1
  */
-public class NumeroNivelInvalidoException {
-    
+public class NumeroNivelInvalidoException  extends RuntimeException {
+    public NumeroNivelInvalidoException(String message) {
+        super(message);
+    }
 }

@@ -5,6 +5,8 @@ package com.lanebulosadeqwerty.exceptions;
  * o al CREAR un numero de leccion para tener un numero de leccion ya existente en ese nivel
  */
 
-public class NumeroLeccionInvalidoException {
-    
+public class NumeroLeccionInvalidoException  extends RuntimeException {
+    public NumeroLeccionInvalidoException(String message) {
+        super(message);
+    }
 }
