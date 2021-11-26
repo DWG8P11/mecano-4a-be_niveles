@@ -20,17 +20,17 @@ public class Puntajes{
     // // @OneToOne
     // @ManyToOne
     // @JoinColumn(name = "id")
-    // private String leccion_id;
-    private String leccion_id;
+    // private String leccionId;
+    private String leccionId;
 
-    public Puntajes(String id, String usuario,double precision, Integer cpm_e, Double segundos, Date fecha, String leccion_id) {
+    public Puntajes(String id, String usuario,double precision, Integer cpm_e, Double segundos, Date fecha, String leccionId) {
         this.id = id;
         this.precision = precision;
         this.usuario = usuario;
         this.cpm_e = cpm_e;
         this.segundos = segundos;
         this.fecha = fecha;
-        this.leccion_id = leccion_id;
+        this.leccionId = leccionId;
         }
     public Puntajes() {}
 
@@ -82,12 +82,12 @@ public class Puntajes{
         this.fecha = fecha;
         }  
 
-    public String getleccion_id() {
-        return this.leccion_id;
+    public String getleccionId() {
+        return this.leccionId;
     }
 
-    public void setleccion_id(String leccion_id) {
-        this.leccion_id = leccion_id;
+    public void setleccionId(String leccionId) {
+        this.leccionId = leccionId;
     }
 
 }

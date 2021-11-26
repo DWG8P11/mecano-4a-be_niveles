@@ -8,5 +8,5 @@ import java.util.List;
 
 
 public interface LeccionesRepository extends MongoRepository<Lecciones, String> {
-    List<Lecciones> findByNivel (Niveles nivel);
+    List<Lecciones> findByNivel (Integer nivel);
 }
