@@ -2,13 +2,13 @@ package com.lanebulosadeqwerty.niveles_ms.models;
 import java.util.ArrayList;
 import javax.persistence.*;
 import org.springframework.data.annotation.Id;
+import java.util.List;
 
 @Entity 
 @Table(name="leccion") // Nombrar tabla de la bd
 public class Lecciones {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private String id;
     private String titulo;
     private Integer n_leccion;
     private String texto;
@@ -20,20 +20,20 @@ public class Lecciones {
     private Integer mini3;
     private Integer mini4;
 
-    @OneToOne(mappedBy = "id", cascade = CascadeType.ALL)
-    private Puntajes puntaje;
-
     @ManyToOne
     @JoinColumn(name = "id")
-    private Niveles niveles; 
+    private Integer nivel; 
 
-    //private boolean ignorar_mayus;
-    //private boolean ignorar_tildes;
-    //private Boolean ignorar_dieres;
+    // @OneToMany(mappedBy = "id")//, cascade = CascadeType.ALL)
+    // private List<Puntajes> puntaje;
 
+    private Boolean ignorarMayus;
+    private Boolean ignorarTildes;
+    private Boolean ignorarDieres;
 
-    public Lecciones(Integer id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
-                     Integer mini1, Integer mini2,Integer mini3, Integer mini4) {
+    public Lecciones(String id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
+                     Integer mini1, Integer mini2,Integer mini3, Integer mini4, Integer nivel, 
+                     Boolean ignorarMayus, Boolean ignorarTildes, Boolean ignorarDieres) {
         this.id=id;                        
         this.titulo = titulo;
         this.n_leccion = n_leccion;
@@ -44,15 +44,21 @@ public class Lecciones {
         this.mini2 = mini2;
         this.mini3 = mini3;
         this.mini4 = mini4;
-        }
-        public Lecciones() {}
+        this.nivel = nivel;
+
+        this.ignorarMayus = ignorarMayus;
+        this.ignorarTildes = ignorarTildes;
+        this.ignorarDieres = ignorarDieres;
+    }
+        
+    // public Lecciones() {}
 
 
-    public Integer getId() {
+    public String getId() {
         return id;
         }
         
-    public void setNombre(Integer id) {
+    public void setId(String id) {
         this.id = id;
         }
 
@@ -128,5 +134,37 @@ public class Lecciones {
         this.mini4 = mini4;
     }
 
+    public Integer getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
+    }
+
+    public Boolean getIgnorarMayus() {
+        return this.ignorarMayus;
+    }
+
+    public void setIgnorarMayus(Boolean ignorarMayus) {
+        this.ignorarMayus = ignorarMayus;
+    }
+
+    public Boolean getIgnorarTildes() {
+        return this.ignorarTildes;
+    }
+
+    public void setIgnorarTildes(Boolean ignorarTildes) {
+        this.ignorarTildes = ignorarTildes;
+    }
+
+    public Boolean getIgnorarDieres() {
+        return this.ignorarDieres;
+    }
+
+    public void setIgnorarDieres(Boolean ignorarDieres) {
+        this.ignorarDieres = ignorarDieres;
+    }
+    
 
 }

@@ -1,7 +1,7 @@
 package com.lanebulosadeqwerty.niveles_ms.models;
 import org.springframework.data.annotation.Id;
 
-import java.sql.Time;
+// import java.sql.Double;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -10,35 +10,35 @@ import javax.persistence.*;
 @Table(name="puntajes") // Nombrar tabla de la bd
 public class Puntajes{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // autoincremental
-    private Integer id;
-    private String usuario;
+    private String id;
+    private String usuario; // Nombre de usuario
     private double precision;
-    private Integer cpm_t;
     private Integer cpm_e;
-    private Time tiempo;
+    private Double segundos;
     private Date fecha;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    private Lecciones lecciones;
+    // // @OneToOne
+    // @ManyToOne
+    // @JoinColumn(name = "id")
+    // private String leccionId;
+    private String leccionId;
 
-    public Puntajes(Integer id, String usuario,double precision,Integer cpm_t, Integer cpm_e, Time tiempo, Date fecha) {
+    public Puntajes(String id, String usuario,double precision, Integer cpm_e, Double segundos, Date fecha, String leccionId) {
         this.id = id;
         this.precision = precision;
         this.usuario = usuario;
-        this.cpm_t = cpm_t;
         this.cpm_e = cpm_e;
-        this.tiempo = tiempo;
+        this.segundos = segundos;
         this.fecha = fecha;
+        this.leccionId = leccionId;
         }
     public Puntajes() {}
 
-    public Integer getId() {
+    public String getId() {
         return id;
         }
         
-    public void setNombre(Integer id) {
+    public void setNombre(String id) {
         this.id = id;
         }
 
@@ -56,15 +56,7 @@ public class Puntajes{
                 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
-        }  
-
-    public Integer getCpm_t() {
-        return cpm_t;
-        }
-        
-    public void setCpm_t(Integer cpm_t) {
-        this.cpm_t = cpm_t;
-        }      
+        }     
         
     public Integer getCpm_e() {
         return cpm_e;
@@ -74,12 +66,12 @@ public class Puntajes{
         this.cpm_e = cpm_e;
         }        
         
-    public Time getTiempo() {
-        return tiempo;
+    public Double getSegundos() {
+        return segundos;
         }
                 
-    public void setTiempo(Time tiempo) {
-        this.tiempo = tiempo;
+    public void setSegundos(Double segundos) {
+        this.segundos = segundos;
         }          
 
     public Date getFecha() {
@@ -90,6 +82,12 @@ public class Puntajes{
         this.fecha = fecha;
         }  
 
+    public String getleccionId() {
+        return this.leccionId;
+    }
 
+    public void setleccionId(String leccionId) {
+        this.leccionId = leccionId;
+    }
 
 }
