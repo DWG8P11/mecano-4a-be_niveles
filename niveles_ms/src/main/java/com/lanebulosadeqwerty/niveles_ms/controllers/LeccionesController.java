@@ -33,6 +33,10 @@ public class LeccionesController {
         this.nivelesRepositorio = repositorioNiveles;
     }
 
+    /*
+     * CRUD
+     */
+
     @GetMapping("/aprende/lecciones")
     List<Lecciones> traerLecciones() {
         return leccionesRepositorio.findAll();
@@ -112,7 +116,7 @@ public class LeccionesController {
 
         // Error: si el numero de nivel es invalido
         if (leccionNueva.getNivel() < 1) {
-            throw new NumeroLeccionInvalidoException("El número de lección debe ser mayor o igual a 1.");   
+            throw new NumeroLeccionInvalidoException("El número de nivel debe ser mayor o igual a 1.");   
         }
 
         // Error: el numero de nivel existe en la base de datos
@@ -172,7 +176,23 @@ public class LeccionesController {
         leccionesRepositorio.delete(leccion);
     }
 
-    // Metodos ayudantes
+    /*
+     * Controllers para peticiones adicionales previstas
+     */
+    @GetMapping("/aprende/lecciones/{nivel}")
+    List<Lecciones> traerLeccionEnNivel(@PathVariable Integer nivel) {
+        // Error: el numero de nivel existe en la base de datos
+        if (nivelesRepositorio.findById(nivel).isEmpty()){
+            throw new NivelNoEncontradoException("El nivel deseado no existe.");
+        }
+
+        return leccionesRepositorio.findAllByNivel(nivel);
+    }
+
+
+    /*
+     * Metodos ayudantes
+     */
     private Lecciones traerLeccionEnNivel(Integer nivel, Integer nLeccion) {
         List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(nivel);
         for (Lecciones leccionEnNivel : leccionesEnNivel) {
