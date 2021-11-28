@@ -160,16 +160,16 @@ public class LeccionesController {
         return leccionesRepositorio.save(leccionNueva);
     }
 
-    @DeleteMapping("/aprende/lecciones/{id}")
-    void borrarLeccion(@PathVariable String id) {
-        Lecciones nivel = leccionesRepositorio.findById(id).orElse(null);
+    @DeleteMapping("/aprende/lecciones/{nivel}/{nLeccion}")
+    void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
+        Lecciones leccion = traerLeccion(nivel, nLeccion);
 
         // Error: Si se está tratando de modificar un nivel inexistente
-        if (nivel == null) {
-            throw new LeccionNoEncontradaException("No se puede eliminar un nivel inexistente.");
+        if (leccion == null) {
+            throw new LeccionNoEncontradaException("No se puede eliminar una lección inexistente.");
         }
         
-        leccionesRepositorio.delete(nivel);
+        leccionesRepositorio.delete(leccion);
     }
 
     // Metodos ayudantes
