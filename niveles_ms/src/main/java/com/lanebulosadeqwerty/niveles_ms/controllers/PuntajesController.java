@@ -23,7 +23,10 @@ public class PuntajesController {
     }
 
     @GetMapping("/aprende/puntajes")
-    List<Puntajes> traerPuntajes(@RequestParam(required = false) String usuario, @RequestParam(required = false) String idLeccion) {
+    List<Puntajes> traerPuntajes(@RequestParam String usuario, @RequestParam(required = false) String idLeccion) {
+        /**
+         * Retorna lista de puntajes, con posible filtro por usuario y/o por id de leccion
+         */
         if (usuario == null && idLeccion == null) {
             return puntajesRepositorio.findAll();
         }
@@ -34,12 +37,19 @@ public class PuntajesController {
             return puntajesRepositorio.findAllByLeccionId(idLeccion);
         }
 
+        // Nota: basado en metodo ayudante traerPuntajesUsuarioLeccion, que devuelve excepcion si la leccion no existe
         return traerPuntajesUsuarioLeccion(usuario, idLeccion);
         
     }
 
     @GetMapping("/aprende/puntajes/numeros")
-    List<Puntajes> traerPuntajesUsuarioLeccion(@RequestParam String usuario, @RequestParam Integer nivel, @RequestParam Integer nLeccion) {
+    List<Puntajes> traerPuntajesUsuarioLeccion(@RequestParam(required = false) String usuario, @RequestParam Integer nivel, @RequestParam Integer nLeccion) {
+        /**
+         * Retorna lista de puntajes con filtro por leccion indicada por (nivel, nLeccion),
+         * y con filtro opcional por usuario
+         */
+
+        // Nota: basado en metodo ayudante traerPuntajesUsuarioLeccion, que devuelve excepcion si la leccion no existe
         return traerPuntajesUsuarioLeccion(usuario, traerIdLeccionPorNivLec(nivel, nLeccion));
     }
 
@@ -55,6 +65,10 @@ public class PuntajesController {
      */
     
     private List<Puntajes> traerPuntajesUsuarioLeccion(String usuario, String idLeccion) {
+        /**
+         * Devuelve la lista de puntajes del usuario en la leccion identificada por idLeccion.
+         * Si idLeccion no identifica a una leccion, devuelve la excepcion adecuada.
+         */
         //TODO Verificar que el usuario existe?
 
         // Error: la leccion no existe
@@ -73,16 +87,6 @@ public class PuntajesController {
         }
 
         return rta;
-    }
-
-    private Integer[] traerNivLecPorIdLeccion(String idLeccion) {
-        Lecciones leccion = leccionesRepositorio.findById(idLeccion).orElse(null);
-        
-        if (leccion == null){
-            return null;
-        }
-
-        return new Integer[]{leccion.getNivel(), leccion.getN_leccion()};
     }
 
     private String traerIdLeccionPorNivLec(Integer nivel, Integer nLeccion) {
