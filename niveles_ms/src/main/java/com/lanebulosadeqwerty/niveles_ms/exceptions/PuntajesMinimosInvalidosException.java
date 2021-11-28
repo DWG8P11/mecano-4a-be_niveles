@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 /*
  * Si se trata de agregar una leccion, con un puntaje min1 < 0, 

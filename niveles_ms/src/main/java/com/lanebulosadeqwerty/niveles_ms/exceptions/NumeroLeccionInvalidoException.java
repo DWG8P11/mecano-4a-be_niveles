@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 /*
  * Al agregar o modificar una lección, usando un numero de leccion menor a 1, 

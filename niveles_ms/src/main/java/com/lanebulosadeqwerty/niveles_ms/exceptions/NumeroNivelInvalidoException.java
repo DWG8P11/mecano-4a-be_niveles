@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 /*
  * Si se trata de crear o modificar un nivel menos a 1

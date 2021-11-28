@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 /*
  * Al agregar o modificar una lección, indicando un conjunto de teclas que no se encuentre en el conjunto de teclas validas 

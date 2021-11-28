@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class NumeroLeccionInvalidoAdvice {
+public class TeclasInvalidasAdvice {
     @ResponseBody
-    @ExceptionHandler(NumeroLeccionInvalidoException.class)
+    @ExceptionHandler(TeclasInvalidasException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String NumeroLeccionInvalidoAdvice(NumeroLeccionInvalidoException ex){
+    String TeclasInvalidasException(TeclasInvalidasException ex){
         return ex.getMessage();
     }
 }

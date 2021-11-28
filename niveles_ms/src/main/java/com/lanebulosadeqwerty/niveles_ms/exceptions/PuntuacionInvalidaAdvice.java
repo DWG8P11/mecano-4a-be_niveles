@@ -1,4 +1,4 @@
-package com.lanebulosadeqwerty.exceptions;
+package com.lanebulosadeqwerty.niveles_ms.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 @ResponseBody
-public class NivelNoEncontradoAdvice {
+public class PuntuacionInvalidaAdvice {
     @ResponseBody
-    @ExceptionHandler(NivelNoEncontradoException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String NivelNoEncontradoAdvice(NivelNoEncontradoException ex){
+    @ExceptionHandler(PuntuacionInvalidaException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String PuntuacionInvalidaAdvice(PuntuacionInvalidaException ex){
         return ex.getMessage();
     }
 }
