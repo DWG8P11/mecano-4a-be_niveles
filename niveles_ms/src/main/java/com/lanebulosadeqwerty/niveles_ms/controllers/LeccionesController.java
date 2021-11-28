@@ -195,6 +195,17 @@ public class LeccionesController {
         return leccionesRepositorio.save(leccionNueva);
     }
 
+    @PutMapping("/aprende/lecciones/{idLeccion}")
+    Lecciones actualizarLeccion(@PathVariable String idLeccion, @RequestBody Lecciones leccionNueva) {
+        // TODO mejorar
+        Lecciones leccion = leccionesRepositorio.findById(idLeccion).orElse(null);
+        if (leccion == null) {
+            throw new LeccionNoEncontradaException("No se encontro la lección que desea modificar. Por favor verifique el id.");
+        }
+
+        return actualizarLeccion(leccion.getNivel(), leccion.getN_leccion(), leccionNueva);
+    }
+
     @DeleteMapping("/aprende/lecciones/{nivelViejo}/{nLeccionViejo}")
     void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
         /**
