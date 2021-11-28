@@ -195,8 +195,8 @@ public class LeccionesController {
         return leccionesRepositorio.save(leccionNueva);
     }
 
-    @DeleteMapping("/aprende/lecciones")
-    void borrarLeccion(@RequestParam Integer nivel, @RequestParam Integer nLeccion) {
+    @DeleteMapping("/aprende/lecciones/{nivelViejo}/{nLeccionViejo}")
+    void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
         /**
          * Borrar la leccion que se indica en los parametros de la peticion
          * a traves de su nivel y numero de leccion
