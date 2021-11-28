@@ -195,8 +195,12 @@ public class LeccionesController {
         return leccionesRepositorio.save(leccionNueva);
     }
 
-    @DeleteMapping("/aprende/lecciones/{nivel}/{nLeccion}")
-    void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
+    @DeleteMapping("/aprende/lecciones")
+    void borrarLeccion(@RequestParam Integer nivel, @RequestParam Integer nLeccion) {
+        /**
+         * Borrar la leccion que se indica en los parametros de la peticion
+         * a traves de su nivel y numero de leccion
+         */
         Lecciones leccion = traerLeccion(nivel, nLeccion);
 
         // Error: Si se está tratando de modificar un nivel inexistente
@@ -211,6 +215,20 @@ public class LeccionesController {
             }
         }
         
+        leccionesRepositorio.delete(leccion);
+    }
+
+    @DeleteMapping("/aprende/lecciones/{idLeccion}")
+    void borrarLeccion(@PathVariable String idLeccion) {
+        /**
+         * Borrar la leccion indicada por la variable de URL idLeccion
+         */
+        Lecciones leccion = leccionesRepositorio.findById(idLeccion).orElse(null);
+
+        if (leccion == null) {
+            throw new LeccionNoEncontradaException("No se encontró la lección que se desea eliminar. Verifique el id.");
+        }
+
         leccionesRepositorio.delete(leccion);
     }
 
