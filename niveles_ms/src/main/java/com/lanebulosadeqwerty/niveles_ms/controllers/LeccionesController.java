@@ -42,8 +42,35 @@ public class LeccionesController {
      */
 
     @GetMapping("/aprende/lecciones")
-    List<Lecciones> traerLecciones() {
+    List<Lecciones> traerLecciones(@RequestParam(required = false) Integer nivel) {
+        /**
+         * Retorna lista de lecciones, con posible filtro por nivel
+         */
+        // Filtrar por nivel, si se indico alguno
+        if (nivel != null){
+            // Error: el numero de nivel existe en la base de datos
+            if (nivelesRepositorio.findById(nivel).isEmpty()){
+                throw new NivelNoEncontradoException("El nivel deseado no existe.");
+            }
+
+            return leccionesRepositorio.findAllByNivel(nivel);
+        }
+        // Retornarlos todos, si no hubo un filtro
         return leccionesRepositorio.findAll();
+    }
+
+    @GetMapping("/aprende/lecciones/{idLeccion}")
+    Lecciones traerLeccionPorId(@PathVariable String idLeccion) {
+        /**
+         * Retorna la leccion indicada por el id en la URL
+         */
+        Lecciones leccion = leccionesRepositorio.findById(idLeccion).orElse(null);
+
+        if (leccion == null){
+            throw new LeccionNoEncontradaException("No se encontró la lección deseada. Verifique el id.");
+        }
+
+        return leccion;
     }
 
     @GetMapping("/aprende/lecciones/{nivel}/{nLeccion}")
@@ -51,7 +78,7 @@ public class LeccionesController {
         Lecciones leccion = traerLeccionEnNivel(nivel, nLeccion);
 
         if (leccion == null) {
-            throw new LeccionNoEncontradaException("No se encontró la lección deseada.");
+            throw new LeccionNoEncontradaException("No se encontró la lección deseada. Verifique el nivel y el número de lección.");
         }
 
         return leccion;
@@ -187,19 +214,7 @@ public class LeccionesController {
         leccionesRepositorio.delete(leccion);
     }
 
-    /*
-     * Controllers para peticiones adicionales previstas
-     */
-    @GetMapping("/aprende/lecciones/{nivel}")
-    List<Lecciones> traerLeccionEnNivel(@PathVariable Integer nivel) {
-        // Error: el numero de nivel existe en la base de datos
-        if (nivelesRepositorio.findById(nivel).isEmpty()){
-            throw new NivelNoEncontradoException("El nivel deseado no existe.");
-        }
-
-        return leccionesRepositorio.findAllByNivel(nivel);
-    }
-
+    
 
     /*
      * Metodos ayudantes
