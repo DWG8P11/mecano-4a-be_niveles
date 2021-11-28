@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface PuntajesRepository extends MongoRepository<Puntajes, String> {
-    List<Puntajes> findByUsuario(String usuario);
-    List<Puntajes> findByLeccionId(String leccionId);
+    List<Puntajes> findAllByUsuario(String usuario);
+    List<Puntajes> findAllByLeccionId(String leccionId);
 }

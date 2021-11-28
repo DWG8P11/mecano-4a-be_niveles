@@ -82,11 +82,11 @@ public class Puntajes{
         this.fecha = fecha;
         }  
 
-    public String getleccionId() {
+    public String getLeccionId() {
         return this.leccionId;
     }
 
-    public void setleccionId(String leccionId) {
+    public void setLeccionId(String leccionId) {
         this.leccionId = leccionId;
     }
 
