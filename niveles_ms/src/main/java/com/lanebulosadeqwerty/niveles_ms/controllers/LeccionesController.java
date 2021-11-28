@@ -25,12 +25,12 @@ public class LeccionesController {
     }
 
     @GetMapping("/aprende/lecciones")
-    List<Lecciones> getLecciones() {
+    List<Lecciones> traerLecciones() {
         return leccionesRepositorio.findAll();
     }
 
     @PostMapping("/aprende/lecciones")
-    Lecciones nuevoNivel(@RequestBody Lecciones leccion) {
+    Lecciones nuevaLeccion(@RequestBody Lecciones leccion) {
         // Verificar que el numero de leccion es valido
         if (leccion.getN_leccion() < 1) {
             throw new NumeroLeccionInvalidoException("El número del leccion debe ser mayor o igual a 1.");   
@@ -58,7 +58,7 @@ public class LeccionesController {
     }
 
     @PutMapping("/aprende/lecciones/{idViejo}")
-    Lecciones actualizarNivel(@PathVariable String idViejo, @RequestBody Lecciones nivelNuevo) {
+    Lecciones actualizarLeccion(@PathVariable String idViejo, @RequestBody Lecciones nivelNuevo) {
         
         // Error: Si se está tratando de modificar un nivel inexistente
         Lecciones nivelViejo = leccionesRepositorio.findById(idViejo).orElse(null);
@@ -87,7 +87,7 @@ public class LeccionesController {
     }
 
     @DeleteMapping("/aprende/lecciones/{id}")
-    void borrarNivel(@PathVariable String id) {
+    void borrarLeccion(@PathVariable String id) {
         Lecciones nivel = leccionesRepositorio.findById(id).orElse(null);
 
         // Error: Si se está tratando de modificar un nivel inexistente

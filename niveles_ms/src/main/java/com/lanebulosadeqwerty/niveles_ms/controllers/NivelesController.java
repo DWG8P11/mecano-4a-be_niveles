@@ -20,7 +20,7 @@ public class NivelesController {
     }
 
     @GetMapping("/aprende/niveles")
-    List<Niveles> getNiveles() {
+    List<Niveles> traerNiveles() {
         return nivelesRepositorio.findAll();
     }
 
