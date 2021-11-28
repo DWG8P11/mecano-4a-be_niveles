@@ -1,6 +1,7 @@
 package com.lanebulosadeqwerty.niveles_ms.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.lanebulosadeqwerty.niveles_ms.models.Lecciones;
 import com.lanebulosadeqwerty.niveles_ms.repositories.LeccionesRepository;
@@ -47,44 +48,41 @@ public class LeccionesController {
         }
 
         // Verificar que el numero de leccion no existe ya para el nivel deseado
-        List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(leccion.getNivel());
-        for (Lecciones leccionEnNivel : leccionesEnNivel) {
-            if (leccionEnNivel.getN_leccion() == leccion.getN_leccion()){
-                throw new LeccionYaExisteException("El número de lección ya existe en este nivel.");
-            }
+        if (traerLeccionEnNivel(leccion.getNivel(), leccion.getN_leccion()) != null){
+            throw new LeccionYaExisteException("El número de lección ya existe en este nivel.");
         }
 
         return leccionesRepositorio.save(leccion);
     }
 
-    @PutMapping("/aprende/lecciones/{idViejo}")
-    Lecciones actualizarLeccion(@PathVariable String idViejo, @RequestBody Lecciones nivelNuevo) {
+    // @PutMapping("/aprende/lecciones/{nivelViejo}/{nLeccionViejo}")
+    // Lecciones actualizarLeccion(@PathVariable Integer nivelViejo, @PathVariable Integer nLeccionViejo, @RequestBody Lecciones nivelNuevo) {
         
-        // Error: Si se está tratando de modificar un nivel inexistente
-        Lecciones nivelViejo = leccionesRepositorio.findById(idViejo).orElse(null);
-        if (nivelViejo == null) {
-            throw new LeccionNoEncontradaException("No se puede modificar un nivel inexistente.");
-        }
+    //     // Error: Si se está tratando de modificar una leccion inexistente
+    //     Lecciones leccionVieja = leccionesRepositorio.findById(nLeccionViejo).orElse(null);
+    //     // if (leccionVieja == null) {
+    //     //     throw new LeccionNoEncontradaException("No se puede modificar una leccion inexistente.");
+    //     // }
         
-        // Error: si el nuevo numero de nivel es invalido
-        if (nivelNuevo.getN_leccion() < 1) {
-            throw new NumeroLeccionInvalidoException("El número del nivel (id) debe ser mayor o igual a 1.");   
-        }
+    //     // Error: si el nuevo numero de nivel es invalido
+    //     if (nivelNuevo.getN_leccion() < 1) {
+    //         throw new NumeroLeccionInvalidoException("El número del nivel (id) debe ser mayor o igual a 1.");   
+    //     }
 
-        // Error: si se está tratando de asignar un número de nivel ya existente
-        Lecciones nivelIgual = leccionesRepositorio.findById(nivelNuevo.getId()).orElse(null);
-        if (nivelIgual != null && idViejo != nivelNuevo.getId()) {
-            throw new LeccionYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
-        }
+    //     // Error: si se está tratando de asignar un número de nivel ya existente
+    //     Lecciones nivelIgual = leccionesRepositorio.findById(nivelNuevo.getId()).orElse(null);
+    //     if (nivelIgual != null && nLeccionViejo != nivelNuevo.getId()) {
+    //         throw new LeccionYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
+    //     }
 
-        // Borrar el nivel antiguo si sus ids son distintos
-        if (nivelViejo.getId() != nivelNuevo.getId()) {
-            leccionesRepositorio.delete(nivelViejo);
-        }
+    //     // Borrar el nivel antiguo si sus ids son distintos
+    //     if (nivelViejo.getId() != nivelNuevo.getId()) {
+    //         leccionesRepositorio.delete(nivelViejo);
+    //     }
         
-        // Guardar nivel actualizado
-        return leccionesRepositorio.save(nivelNuevo);
-    }
+    //     // Guardar nivel actualizado
+    //     return leccionesRepositorio.save(nivelNuevo);
+    // }
 
     @DeleteMapping("/aprende/lecciones/{id}")
     void borrarLeccion(@PathVariable String id) {
@@ -96,6 +94,18 @@ public class LeccionesController {
         }
         
         leccionesRepositorio.delete(nivel);
+    }
+
+    // Metodos ayudantes
+    private Lecciones traerLeccionEnNivel(Integer nNivel, Integer nLeccion) {
+        List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(nNivel);
+        for (Lecciones leccionEnNivel : leccionesEnNivel) {
+            if (leccionEnNivel.getN_leccion() == nLeccion){
+                return leccionEnNivel;
+            }
+        }
+
+        return null;
     }
     
 }
