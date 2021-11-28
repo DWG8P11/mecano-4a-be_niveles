@@ -3,8 +3,8 @@ package com.lanebulosadeqwerty.niveles_ms.repositories;
 import com.lanebulosadeqwerty.niveles_ms.models.Niveles;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface NivelesRepository extends MongoRepository<Niveles, String> {
-    List<Niveles> findById (Integer nivel);
+    Optional<Niveles> findById (Integer nivel); // Optional es List, pero permitiendo el valor de nulo
 }
