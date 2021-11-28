@@ -1,5 +1,7 @@
 package com.lanebulosadeqwerty.niveles_ms.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +13,12 @@ import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionYaExisteException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroLeccionInvalidoException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroNivelInvalidoException;
+import com.lanebulosadeqwerty.niveles_ms.exceptions.PuntajesMinimosInvalidosException;
+import com.lanebulosadeqwerty.niveles_ms.exceptions.TeclasInvalidasException;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.text.Normalizer;
 
 @RestController
 public class LeccionesController {
@@ -20,7 +26,7 @@ public class LeccionesController {
     private final LeccionesRepository leccionesRepositorio;
     private final NivelesRepository nivelesRepositorio;
 
-    private final char[] arregloTeclasValidas = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ñ', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', ';', ':', ,'¿', '?', '¡', '!', '"', "'", '\n', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '#', '$', '%', '&', '/', '(', ')', '=', '+', '*', '[', ']', '{', '}', '-', '_', '°', '|', '¬', '\\', '`', '~', '^', '@', '<', '>'};
+    private final List<String> arregloTeclasValidas = Arrays.asList((new String[]{"a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "z", "x", "c", "v", "b", "n", "m", ",", ".", ";", ":", "¿", "?", "¡", "!", "\"", "'", "\n", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "#", "$", "%", "&", "/", "(", ")", "=", "+", "*", "[", "]", "{", "}", "-", "_", "°", "|", "¬", "\\", "`", "~", "^", "@", "<", ">"}));
 
     public LeccionesController(LeccionesRepository repositorioLecciones, NivelesRepository repositorioNiveles) {
         this.leccionesRepositorio = repositorioLecciones;
@@ -30,6 +36,17 @@ public class LeccionesController {
     @GetMapping("/aprende/lecciones")
     List<Lecciones> traerLecciones() {
         return leccionesRepositorio.findAll();
+    }
+
+    @GetMapping("/aprende/lecciones/{nivel}/{nLeccion}")
+    Lecciones traerLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
+        Lecciones leccion = traerLeccionEnNivel(nivel, nLeccion);
+
+        if (leccion == null) {
+            throw new LeccionNoEncontradaException("No se encontró la lección deseada.");
+        }
+
+        return leccion;
     }
 
     @PostMapping("/aprende/lecciones")
@@ -52,6 +69,28 @@ public class LeccionesController {
         // Error: el numero de leccion no existe ya para el nivel deseado
         if (traerLeccionEnNivel(leccion.getNivel(), leccion.getN_leccion()) != null){
             throw new LeccionYaExisteException("El número de lección ya existe en este nivel.");
+        }
+
+        // Error: teclas de leccion invalidas
+        // Primero normalizar y lower case teclas
+        ArrayList<String> teclasNormalizadas = new ArrayList<>();
+        String normCar;
+        for (String cLeccion : leccion.getTeclas()) {
+            normCar = Normalizer.normalize( cLeccion, Normalizer.Form.NFD ).toLowerCase();
+            if (!teclasNormalizadas.contains(normCar)) // Evitar repeticion
+                teclasNormalizadas.add(normCar);
+        }
+        leccion.setTeclas(teclasNormalizadas);
+
+        for (String cLeccion : teclasNormalizadas) {
+            if (!arregloTeclasValidas.contains(cLeccion)){
+                throw new TeclasInvalidasException("El símbolo '" + cLeccion + "' no es parte de los símbolos permitidos para una lección.");
+            }
+        }
+
+        // Error: los puntajes mínimos no son válidos
+        if (leccion.getMini1() < 0 || leccion.getMini2() < leccion.getMini1() || leccion.getMini3() < leccion.getMini2() || leccion.getMini4() < leccion.getMini3()) {
+            throw new PuntajesMinimosInvalidosException("Los puntajes mínimos de la lección deben ser mayores a 0 y no pueden ser decrecientes.");
         }
 
         return leccionesRepositorio.save(leccion);
@@ -81,16 +120,41 @@ public class LeccionesController {
             throw new NivelNoEncontradoException("No se puede modificar una leccion para pertenecer a un nivel inexistente.");
         }
 
-        // Error: el numero de leccion no existe ya para el nivel deseado
+        // Error: el numero de leccion existe ya para el nivel deseado
         Lecciones leccionIgual = traerLeccionEnNivel(leccionNueva.getNivel(), leccionNueva.getN_leccion());
-        if (leccionIgual != null && (nLeccionViejo != leccionNueva.getN_leccion() && nivelViejo != leccionNueva.getNivel())){
+        if (leccionIgual != null && (nLeccionViejo != leccionNueva.getN_leccion() || nivelViejo != leccionNueva.getNivel())){
             throw new LeccionYaExisteException("El número de lección ya existe en este nivel.");
+        }
+
+        // Error: teclas de leccion invalidas
+        // Primero normalizar y lower case teclas
+        ArrayList<String> teclasNormalizadas = new ArrayList<>();
+        String normCar;
+        for (String cLeccion : leccionNueva.getTeclas()) {
+            normCar = Normalizer.normalize( cLeccion, Normalizer.Form.NFD ).toLowerCase();
+            if (!teclasNormalizadas.contains(normCar)) // Evitar repeticion
+                teclasNormalizadas.add(normCar);
+        }
+        leccionNueva.setTeclas(teclasNormalizadas);
+
+        for (String cLeccion : teclasNormalizadas) {
+            if (!arregloTeclasValidas.contains(cLeccion)){
+                throw new TeclasInvalidasException("El símbolo '" + cLeccion + "' no es parte de los símbolos permitidos para una lección.");
+            }
+        }
+
+        // Error: los puntajes mínimos no son válidos
+        if (leccionNueva.getMini1() < 0 || leccionNueva.getMini2() < leccionNueva.getMini1() || leccionNueva.getMini3() < leccionNueva.getMini2() || leccionNueva.getMini4() < leccionNueva.getMini3()) {
+            throw new PuntajesMinimosInvalidosException("Los puntajes mínimos de la lección deben ser mayores a 0 y no pueden ser decrecientes.");
         }
 
         // Borrar la leccion antigua si su (nivel, n_leccion) son distintos
         if (nivelViejo != leccionNueva.getNivel() || nLeccionViejo != leccionNueva.getN_leccion()) {
             leccionesRepositorio.delete(leccionVieja);
         }
+
+        // Conservar id
+        leccionNueva.setId(leccionVieja.getId());
         
         // Guardar nivel actualizado
         return leccionesRepositorio.save(leccionNueva);
@@ -109,8 +173,8 @@ public class LeccionesController {
     }
 
     // Metodos ayudantes
-    private Lecciones traerLeccionEnNivel(Integer nNivel, Integer nLeccion) {
-        List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(nNivel);
+    private Lecciones traerLeccionEnNivel(Integer nivel, Integer nLeccion) {
+        List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(nivel);
         for (Lecciones leccionEnNivel : leccionesEnNivel) {
             if (leccionEnNivel.getN_leccion() == nLeccion){
                 return leccionEnNivel;

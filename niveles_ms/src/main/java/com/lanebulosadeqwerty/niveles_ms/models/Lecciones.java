@@ -12,7 +12,7 @@ public class Lecciones {
     private String titulo;
     private Integer n_leccion;
     private String texto;
-    private ArrayList<String> teclas = new ArrayList<String>(); 
+    private ArrayList<String> teclas = new ArrayList<String>(); // -> //TODO Character
     private byte imagen;
 
     private Integer mini1;
