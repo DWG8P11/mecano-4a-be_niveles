@@ -7,7 +7,9 @@ import com.lanebulosadeqwerty.niveles_ms.repositories.LeccionesRepository;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionNoEncontradaException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionYaExisteException;
+import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroLeccionInvalidoException;
+import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroNivelInvalidoException;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -29,15 +31,27 @@ public class LeccionesController {
 
     @PostMapping("/aprende/lecciones")
     Lecciones nuevoNivel(@RequestBody Lecciones leccion) {
-        // Verificar que el numero de nivel es valido
+        // Verificar que el numero de leccion es valido
         if (leccion.getN_leccion() < 1) {
             throw new NumeroLeccionInvalidoException("El número del leccion debe ser mayor o igual a 1.");   
         }
-        
-        // Verificar que el nivel no existe ya
-        Lecciones leccionIgual = leccionesRepositorio.findById(leccion.getId()).orElse(null);
-        if (leccionIgual != null) {
-            throw new LeccionYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
+
+        // Verificar que el numero de nivel es valido
+        if (leccion.getNivel() < 1) {
+            throw new NumeroNivelInvalidoException("El número de nivel debe ser mayor o igual a 1.");   
+        }
+
+        // Verificar que el numero de nivel existe en la base de datos
+        if (nivelesRepositorio.findById(leccion.getNivel()).isEmpty()){
+            throw new NivelNoEncontradoException("No se puede agregar una leccion a un nivel inexistente.");
+        }
+
+        // Verificar que el numero de leccion no existe ya para el nivel deseado
+        List<Lecciones> leccionesEnNivel = leccionesRepositorio.findAllByNivel(leccion.getNivel());
+        for (Lecciones leccionEnNivel : leccionesEnNivel) {
+            if (leccionEnNivel.getN_leccion() == leccion.getN_leccion()){
+                throw new LeccionYaExisteException("El número de lección ya existe en este nivel.");
+            }
         }
 
         return leccionesRepositorio.save(leccion);
