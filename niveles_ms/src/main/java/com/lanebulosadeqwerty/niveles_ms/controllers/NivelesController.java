@@ -24,6 +24,16 @@ public class NivelesController {
         return nivelesRepositorio.findAll();
     }
 
+    @GetMapping("/aprende/niveles/{id}")
+    Niveles traerNivel(@PathVariable Integer id) {
+        Niveles nivel = nivelesRepositorio.findById(id).orElse(null);
+        if (nivel == null){
+            throw new NivelNoEncontradoException("El nivel " + id + " no ha sido encontrado.");
+        }
+
+        return nivel;
+    }
+
     @PostMapping("/aprende/niveles")
     Niveles nuevoNivel(@RequestBody Niveles nivel) {
         // Verificar que el numero de nivel es valido
