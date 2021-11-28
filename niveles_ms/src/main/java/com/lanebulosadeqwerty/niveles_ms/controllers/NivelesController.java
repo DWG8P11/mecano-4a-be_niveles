@@ -68,5 +68,17 @@ public class NivelesController {
         // Guardar nivel actualizado
         return nivelesRepositorio.save(nivelNuevo);
     }
+
+    @DeleteMapping("/aprende/niveles/{id}")
+    void borrarNivel(@PathVariable Integer id) {
+        Niveles nivel = nivelesRepositorio.findById(id).orElse(null);
+
+        // Error: Si se está tratando de modificar un nivel inexistente
+        if (nivel == null) {
+            throw new NivelNoEncontradoException("No se puede eliminar un nivel inexistente.");
+        }
+        
+        nivelesRepositorio.delete(nivel);
+    }
     
 }
