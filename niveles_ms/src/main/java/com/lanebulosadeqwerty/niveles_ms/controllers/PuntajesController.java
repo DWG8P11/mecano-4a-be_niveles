@@ -44,6 +44,12 @@ public class PuntajesController {
     }
 
 
+    @PostMapping("/aprendizaje/puntajes")
+    Puntajes nuevoPuntaje(@RequestBody Puntajes puntaje) {
+        return puntajesRepositorio.save(puntaje);
+    }
+
+
     /*
      * Metodos ayudantes
      */

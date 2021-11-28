@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.lanebulosadeqwerty.niveles_ms.models.Lecciones;
+import com.lanebulosadeqwerty.niveles_ms.models.Puntajes;
 import com.lanebulosadeqwerty.niveles_ms.repositories.LeccionesRepository;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
+import com.lanebulosadeqwerty.niveles_ms.repositories.PuntajesRepository;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionNoEncontradaException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionYaExisteException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
@@ -25,12 +27,14 @@ public class LeccionesController {
 
     private final LeccionesRepository leccionesRepositorio;
     private final NivelesRepository nivelesRepositorio;
+    private final PuntajesRepository puntajesRepositorio;
 
     private final List<String> arregloTeclasValidas = Arrays.asList((new String[]{"a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "z", "x", "c", "v", "b", "n", "m", ",", ".", ";", ":", "¿", "?", "¡", "!", "\"", "'", "\n", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "#", "$", "%", "&", "/", "(", ")", "=", "+", "*", "[", "]", "{", "}", "-", "_", "°", "|", "¬", "\\", "`", "~", "^", "@", "<", ">"}));
 
-    public LeccionesController(LeccionesRepository repositorioLecciones, NivelesRepository repositorioNiveles) {
+    public LeccionesController(LeccionesRepository repositorioLecciones, NivelesRepository repositorioNiveles, PuntajesRepository repositorioPuntajes) {
         this.leccionesRepositorio = repositorioLecciones;
         this.nivelesRepositorio = repositorioNiveles;
+        this.puntajesRepositorio = repositorioPuntajes;
     }
 
     /*
@@ -171,6 +175,13 @@ public class LeccionesController {
         // Error: Si se está tratando de modificar un nivel inexistente
         if (leccion == null) {
             throw new LeccionNoEncontradaException("No se puede eliminar una lección inexistente.");
+        }
+        
+        // Borrar todos los puntajes asociados a esta leccion
+        for (Puntajes puntaje : puntajesRepositorio.findAllByLeccionId(leccion.getId())) {
+            if (puntaje.getLeccionId() != null && puntaje.getLeccionId().equals(leccion.getId())) {
+                puntajesRepositorio.delete(puntaje);
+            }
         }
         
         leccionesRepositorio.delete(leccion);

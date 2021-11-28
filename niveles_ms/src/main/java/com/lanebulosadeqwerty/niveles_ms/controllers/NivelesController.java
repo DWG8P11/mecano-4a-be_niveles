@@ -88,6 +88,8 @@ public class NivelesController {
             throw new NivelNoEncontradoException("No se puede eliminar un nivel inexistente.");
         }
         
+        // TODO Deberia borrar las lecciones de este nivel?
+
         nivelesRepositorio.delete(nivel);
     }
     
