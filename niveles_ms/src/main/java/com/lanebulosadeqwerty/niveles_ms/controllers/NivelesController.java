@@ -40,11 +40,11 @@ public class NivelesController {
         return nivelesRepositorio.save(nivel);
     }
 
-    @PutMapping("/aprende/niveles/{id}")
-    Niveles actualizarNivel(@PathVariable Integer id, @RequestBody Niveles nivelNuevo) {
+    @PutMapping("/aprende/niveles/{idViejo}")
+    Niveles actualizarNivel(@PathVariable Integer idViejo, @RequestBody Niveles nivelNuevo) {
         
         // Error: Si se está tratando de modificar un nivel inexistente
-        Niveles nivelViejo = nivelesRepositorio.findById(id).orElse(null);
+        Niveles nivelViejo = nivelesRepositorio.findById(idViejo).orElse(null);
         if (nivelViejo == null) {
             throw new NivelNoEncontradoException("No se puede modificar un nivel inexistente.");
         }
@@ -56,7 +56,7 @@ public class NivelesController {
 
         // Error: si se está tratando de asignar un número de nivel ya existente
         Niveles nivelIgual = nivelesRepositorio.findById(nivelNuevo.getId()).orElse(null);
-        if (nivelIgual != null && id != nivelNuevo.getId()) {
+        if (nivelIgual != null && idViejo != nivelNuevo.getId()) {
             throw new NivelYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
         }
 
