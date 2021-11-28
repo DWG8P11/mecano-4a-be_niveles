@@ -2,7 +2,9 @@ package com.lanebulosadeqwerty.niveles_ms.controllers;
 
 import java.util.List;
 
+import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelYaExisteException;
+import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroNivelInvalidoException;
 import com.lanebulosadeqwerty.niveles_ms.models.Niveles;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
 
@@ -24,12 +26,47 @@ public class NivelesController {
 
     @PostMapping("/aprende/niveles")
     Niveles nuevoNivel(@RequestBody Niveles nivel) {
+        // Verificar que el numero de nivel es valido
+        if (nivel.getId() < 1) {
+            throw new NumeroNivelInvalidoException("El número del nivel (id) debe ser mayor o igual a 1.");   
+        }
+        
+        // Verificar que el nivel no existe ya
         Niveles nivelIgual = nivelesRepositorio.findById(nivel.getId()).orElse(null);
         if (nivelIgual != null) {
             throw new NivelYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
         }
 
         return nivelesRepositorio.save(nivel);
+    }
+
+    @PutMapping("/aprende/niveles/{id}")
+    Niveles actualizarNivel(@PathVariable Integer id, @RequestBody Niveles nivelNuevo) {
+        
+        // Error: Si se está tratando de modificar un nivel inexistente
+        Niveles nivelViejo = nivelesRepositorio.findById(id).orElse(null);
+        if (nivelViejo == null) {
+            throw new NivelNoEncontradoException("No se puede modificar un nivel inexistente.");
+        }
+        
+        // Error: si el nuevo numero de nivel es invalido
+        if (nivelNuevo.getId() < 1) {
+            throw new NumeroNivelInvalidoException("El número del nivel (id) debe ser mayor o igual a 1.");   
+        }
+
+        // Error: si se está tratando de asignar un número de nivel ya existente
+        Niveles nivelIgual = nivelesRepositorio.findById(nivelNuevo.getId()).orElse(null);
+        if (nivelIgual != null && id != nivelNuevo.getId()) {
+            throw new NivelYaExisteException("No es posible crear un nivel nuevo con si un nivel con el mismo número ya existe.");
+        }
+
+        // Borrar el nivel antiguo si sus ids son distintos
+        if (nivelViejo.getId() != nivelNuevo.getId()) {
+            nivelesRepositorio.delete(nivelViejo);
+        }
+        
+        // Guardar nivel actualizado
+        return nivelesRepositorio.save(nivelNuevo);
     }
     
 }
