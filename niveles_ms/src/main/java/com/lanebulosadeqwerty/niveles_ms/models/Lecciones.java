@@ -1,40 +1,56 @@
 package com.lanebulosadeqwerty.niveles_ms.models;
 import java.util.ArrayList;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
-import java.util.List;
 
 @Entity 
 @Table(name="leccion") // Nombrar tabla de la bd
 public class Lecciones {
     @Id
     private String id;
+    @NotBlank
     private String titulo;
+    @NotNull
     private Integer n_leccion;
+    @NotBlank
     private String texto;
     private ArrayList<String> teclas = new ArrayList<String>(); // -> //TODO Character
     private byte imagen;
 
+    @NotNull
+    @Min(0)
     private Integer mini1;
+    @NotNull
     private Integer mini2;
+    @NotNull
     private Integer mini3;
+    @NotNull
     private Integer mini4;
 
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Integer nivel; 
+    // @ManyToOne
+    // @JoinColumn(name = "id")
+    @NotNull
+    private Integer nivel;  //TODO Falta un Class level validator para poder validar que la combinacion de nivel y nLeccion es unica, y que los puntajes minimos no son decrecientes
 
     // @OneToMany(mappedBy = "id")//, cascade = CascadeType.ALL)
     // private List<Puntajes> puntaje;
 
+    // @Value("${this.ignorarMayus: true}")
     private Boolean ignorarMayus;
+    // @Value("${this.ignorarTildes: true}")
     private Boolean ignorarTildes;
+    // @Value("${this.ignorarDieres: true}")
     private Boolean ignorarDieres;
 
-    public Lecciones(String id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
+    public Lecciones(String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
                      Integer mini1, Integer mini2,Integer mini3, Integer mini4, Integer nivel, 
                      Boolean ignorarMayus, Boolean ignorarTildes, Boolean ignorarDieres) {
-        this.id=id;                        
+                              
         this.titulo = titulo;
         this.n_leccion = n_leccion;
         this.texto = texto;
