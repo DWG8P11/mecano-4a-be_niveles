@@ -4,13 +4,19 @@ import org.springframework.data.annotation.Id;
 // import java.util.Collection; // List?
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity 
 @Table(name="nivel") // Nombrar tabla de la bd
 public class Niveles{
     @Id
+    @NotNull(message = "Debe indicar un número de nivel.")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @NotBlank
+    @Size(min = 4, max = 100)
     private String nombre;
     private String descripcion;
     private byte imagen;
