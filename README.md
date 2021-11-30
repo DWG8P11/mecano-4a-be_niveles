@@ -49,7 +49,114 @@ Maven:
 2. Comando que te permite empaquetar el proyecto 
 .\mvnw package
 
+# API
+## Niveles
+- `/aprende/niveles/<id:int>`:
+  - GET: trae el nivel número identificado por el número de nivel `id`, con la siguiente estructura tipo JSON de tipo `Nivel`.
 
+  - PUT: Actualiza el nivel identificado por el número de nivel `id`, al aportar como cuerpo de la petición un texto tipo JSON de tipo `Nivel`. Si el id aportado es distinto, el nivel con el id anterior es eliminado.
+  - DELETE: elimina el nivel identificado por el número de nivel `id`.
+
+- `/aprende/niveles`
+  - GET: trae la lista completa de usuarios
+  - POST: registra un nuevo nivel a partir de un texto tipo json con la siguiente estructura
+
+### Tipos de datos
+```
+Nivel {
+        id          : Int!
+        nombre      : String!
+        descripcion : String
+        imagen      : String
+  }
+```
+## Lecciones
+
+- `/aprende/lecciones`:
+  - GET: traer todas las lecciones. El parametro `nivel` puede ser usado para filtrar la búsqueda.
+  - POST: crear una nueva lección.
+- `/aprende/lecciones/<id: String>`:
+  - GET: traer la lección identificada por id.
+  - PUT: actualizar la lección indicada.
+  - DELETE: actualizar la lección indicada.
+- `/aprende/lecciones/<nivel: int>/<nLeccion: int>`
+  - GET: traer la lección identificada identificada por el número de nivel y número de lección dados
+  - PUT: actualizar la lección indicada.
+  - DELETE: actualizar la lección indicada.
+
+### Tipos de datos
+```
+LeccionIn {
+        titulo          : String!
+        nivel           : Int!
+        n_leccion       : Int!
+        texto           : String!
+        teclas          : [String!]!
+        imagen          : String
+        mini1           : Int!
+        mini2           : Int!
+        mini3           : Int!
+        mini4           : Int!
+        ignorarMayus    : Boolean
+        ignorarTildes   : Boolean
+        ignorarDieres   : Boolean
+    }
+```
+
+```
+LeccionOut {
+        id              : String!
+        titulo          : String!
+        nivel           : Int!
+        n_leccion       : Int!
+        texto           : String!
+        teclas          : [String!]!
+        imagen          : String!
+        mini1           : Int!
+        mini2           : Int!
+        mini3           : Int!
+        mini4           : Int!
+        ignorarMayus    : Boolean!
+        ignorarTildes   : Boolean!
+        ignorarDieres   : Boolean!
+    }
+```
+## Puntajes
+- `/aprende/puntajes`
+  - GET: traer todos los puntajes en las lecciones. Con los parametros de petición `usuario` y/o `nLeccion` se puede filtrar la búsqueda.
+  - POST: crea un nuevo puntaje.
+  - DELETE: elimina los puntajes identificados por los parámetros `usuario` y/o `nLeccion`; al menos uno de los filtros es necesario.
+- `/aprende/puntajes/<id:String>
+  - GET: trae el puntaje identificado por el id indicado.
+  - DELETE: elimina el puntaje indicado.
+  - 
+- `/aprende/puntajes/numeros`
+  - GET: dado el parametro de peticion `usuario`, retorna los puntajes del usuario indicado. Se puede filtrar la búsqueda con los parámetros de petición `nivel` y/o `nLeccion`.
+  - 
+
+### Tipos de datos
+
+```
+PuntajeIn {
+        usuario     : String!
+        precision   : Float!
+        cpme        : Int!
+        segundos    : Int!
+        fecha       : String
+        id_leccion  : String!
+    }
+```
+````
+PuntajeOut {
+        id          : String!
+        usuario     : String!
+        precision   : Float!
+        cpme        : Int!
+        segundos    : Int!
+        fecha       : String
+        id_leccion  : String!
+    }
+````
 
 
 
