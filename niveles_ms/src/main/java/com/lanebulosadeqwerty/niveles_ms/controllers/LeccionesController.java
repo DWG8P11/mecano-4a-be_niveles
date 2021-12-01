@@ -3,13 +3,10 @@ package com.lanebulosadeqwerty.niveles_ms.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import com.lanebulosadeqwerty.niveles_ms.models.Lecciones;
-import com.lanebulosadeqwerty.niveles_ms.models.Puntajes;
 import com.lanebulosadeqwerty.niveles_ms.repositories.LeccionesRepository;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
-import com.lanebulosadeqwerty.niveles_ms.repositories.PuntajesRepository;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionNoEncontradaException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.LeccionYaExisteException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
@@ -27,14 +24,12 @@ public class LeccionesController {
 
     private final LeccionesRepository leccionesRepositorio;
     private final NivelesRepository nivelesRepositorio;
-    private final PuntajesRepository puntajesRepositorio;
 
     private final List<String> arregloTeclasValidas = Arrays.asList((new String[]{"a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "z", "x", "c", "v", "b", "n", "m", ",", ".", ";", ":", "¿", "?", "¡", "!", "\"", "'", "\n", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "#", "$", "%", "&", "/", "(", ")", "=", "+", "*", "[", "]", "{", "}", "-", "_", "°", "|", "¬", "\\", "`", "~", "^", "@", "<", ">"}));
 
-    public LeccionesController(LeccionesRepository repositorioLecciones, NivelesRepository repositorioNiveles, PuntajesRepository repositorioPuntajes) {
+    public LeccionesController(LeccionesRepository repositorioLecciones, NivelesRepository repositorioNiveles) {
         this.leccionesRepositorio = repositorioLecciones;
         this.nivelesRepositorio = repositorioNiveles;
-        this.puntajesRepositorio = repositorioPuntajes;
     }
 
     /*
@@ -206,7 +201,7 @@ public class LeccionesController {
         return actualizarLeccion(leccion.getNivel(), leccion.getN_leccion(), leccionNueva);
     }
 
-    @DeleteMapping("/aprende/lecciones/{nivelViejo}/{nLeccionViejo}")
+    @DeleteMapping("/aprende/lecciones/{nivel}/{nLeccion}")
     void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
         /**
          * Borrar la leccion que se indica en los parametros de la peticion
@@ -219,12 +214,7 @@ public class LeccionesController {
             throw new LeccionNoEncontradaException("No se puede eliminar una lección inexistente.");
         }
         
-        // Borrar todos los puntajes asociados a esta leccion
-        for (Puntajes puntaje : puntajesRepositorio.findAllByLeccionId(leccion.getId())) {
-            if (puntaje.getLeccionId() != null && puntaje.getLeccionId().equals(leccion.getId())) {
-                puntajesRepositorio.delete(puntaje);
-            }
-        }
+        // Borrar todos los puntajes asociados a esta leccion: en API Gateway, si acaso
         
         leccionesRepositorio.delete(leccion);
     }
