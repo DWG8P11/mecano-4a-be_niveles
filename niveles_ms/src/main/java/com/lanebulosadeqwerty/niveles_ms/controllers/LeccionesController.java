@@ -201,7 +201,7 @@ public class LeccionesController {
         return actualizarLeccion(leccion.getNivel(), leccion.getN_leccion(), leccionNueva);
     }
 
-    @DeleteMapping("/aprende/lecciones/{nivelViejo}/{nLeccionViejo}")
+    @DeleteMapping("/aprende/lecciones/{nivel}/{nLeccion}")
     void borrarLeccion(@PathVariable Integer nivel, @PathVariable Integer nLeccion) {
         /**
          * Borrar la leccion que se indica en los parametros de la peticion
