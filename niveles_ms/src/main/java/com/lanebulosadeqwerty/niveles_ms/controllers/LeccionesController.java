@@ -43,10 +43,10 @@ public class LeccionesController {
          */
         // Filtrar por nivel, si se indico alguno
         if (nivel != null){
-            // Error: el numero de nivel existe en la base de datos
-            if (nivelesRepositorio.findById(nivel).isEmpty()){
-                throw new NivelNoEncontradoException("El nivel deseado no existe.");
-            }
+            // Error: el numero de nivel existe en la base de datos COMENTADO PORQUE PUEDE suceder que el nivel se borre, pero las leccioens de ese nivel no se hayan borrado
+            // if (nivelesRepositorio.findById(nivel).isEmpty()){
+            //     throw new NivelNoEncontradoException("El nivel deseado no existe.");
+            // }
 
             return leccionesRepositorio.findAllByNivel(nivel);
         }
@@ -192,7 +192,7 @@ public class LeccionesController {
 
     @PutMapping("/aprende/lecciones/{idLeccion}")
     Lecciones actualizarLeccion(@PathVariable String idLeccion, @RequestBody Lecciones leccionNueva) {
-        // TODO mejorar
+        // TODO mejorar... quiza deberia ser alreves. Porque si por alguna razon hay varias leccioens con mismo nivel y nLeccion, no se borrara necesariamente la que quiero
         Lecciones leccion = leccionesRepositorio.findById(idLeccion).orElse(null);
         if (leccion == null) {
             throw new LeccionNoEncontradaException("No se encontro la lección que desea modificar. Por favor verifique el id.");
