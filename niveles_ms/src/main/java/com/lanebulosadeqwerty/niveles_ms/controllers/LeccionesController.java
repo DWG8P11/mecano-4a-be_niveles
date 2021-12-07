@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.lanebulosadeqwerty.niveles_ms.models.LeccionesLigera;
 import com.lanebulosadeqwerty.niveles_ms.models.Lecciones;
 import com.lanebulosadeqwerty.niveles_ms.repositories.LeccionesRepository;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
@@ -52,6 +53,24 @@ public class LeccionesController {
         }
         // Retornarlos todos, si no hubo un filtro
         return leccionesRepositorio.findAll();
+    }
+
+    @GetMapping("/aprende/lecciones-ligeras")
+    List<LeccionesLigera> traerLeccionesLigeras(@RequestParam(required = false) Integer nivel) {
+        /**
+         * Retorna lista de lecciones, con posible filtro por nivel
+         */
+        // Filtrar por nivel, si se indico alguno
+        if (nivel != null){
+            // Error: el numero de nivel existe en la base de datos COMENTADO PORQUE PUEDE suceder que el nivel se borre, pero las leccioens de ese nivel no se hayan borrado
+            // if (nivelesRepositorio.findById(nivel).isEmpty()){
+            //     throw new NivelNoEncontradoException("El nivel deseado no existe.");
+            // }
+
+            return leccionesRepositorio.findAllByNivelOrNivel(nivel);
+        }
+        // Retornarlos todos, si no hubo un filtro
+        return leccionesRepositorio.findAllBy();
     }
 
     @GetMapping("/aprende/lecciones/{idLeccion}")

@@ -5,6 +5,7 @@ import java.util.List;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelNoEncontradoException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NivelYaExisteException;
 import com.lanebulosadeqwerty.niveles_ms.exceptions.NumeroNivelInvalidoException;
+import com.lanebulosadeqwerty.niveles_ms.models.NivelLigero;
 import com.lanebulosadeqwerty.niveles_ms.models.Niveles;
 import com.lanebulosadeqwerty.niveles_ms.repositories.NivelesRepository;
 
@@ -17,11 +18,16 @@ public class NivelesController {
 
     public NivelesController(NivelesRepository repositorio) {
         this.nivelesRepositorio = repositorio;
-    }
+    }  
 
     @GetMapping("/aprende/niveles")
     List<Niveles> traerNiveles() {
         return nivelesRepositorio.findAll();
+    }
+
+    @GetMapping("/aprende/niveles-ligeros")
+    List<NivelLigero> traerNivelesLigeros() {
+        return nivelesRepositorio.findAllBy();
     }
 
     @GetMapping("/aprende/niveles/{id}")
