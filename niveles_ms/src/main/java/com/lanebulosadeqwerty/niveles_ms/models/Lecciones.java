@@ -13,7 +13,7 @@ public class Lecciones {
     private Integer n_leccion;
     private String texto;
     private ArrayList<String> teclas = new ArrayList<String>(); // -> //TODO Character
-    private byte imagen;
+    private String imagen;
 
     private Integer mini1;
     private Integer mini2;
@@ -31,7 +31,7 @@ public class Lecciones {
     private Boolean ignorarTildes;
     private Boolean ignorarDieres;
 
-    public Lecciones(String id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, byte imagen ,
+    public Lecciones(String id, String titulo,Integer n_leccion, String texto, ArrayList<String> teclas, String imagen ,
                      Integer mini1, Integer mini2,Integer mini3, Integer mini4, Integer nivel, 
                      Boolean ignorarMayus, Boolean ignorarTildes, Boolean ignorarDieres) {
         this.id=id;                        
@@ -94,11 +94,11 @@ public class Lecciones {
         this.teclas = teclas;
     }
 
-    public Byte getImagen() {
+    public String getImagen() {
         return imagen;
         }
             
-    public void setImagen(Byte imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 

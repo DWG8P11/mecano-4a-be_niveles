@@ -13,12 +13,12 @@ public class Niveles{
     private Integer id;
     private String nombre;
     private String descripcion;
-    private byte imagen;
+    private String imagen;
 
     // @OneToMany(mappedBy = "id")
     // private Collection<Lecciones> lecciones; 
 
-    public Niveles(Integer id, String nombre, String descripcion, byte imagen) {
+    public Niveles(Integer id, String nombre, String descripcion, String imagen) {
         this.id=id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -50,11 +50,11 @@ public class Niveles{
         this.descripcion = descripcion;
         }
     
-    public byte getImagen() {
+    public String getImagen() {
         return imagen;
         }
                     
-    public void SetImagen(byte imagen) {
+    public void SetImagen(String imagen) {
         this.imagen = imagen;
         }  
 
