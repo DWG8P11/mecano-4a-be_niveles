@@ -58,8 +58,11 @@ Maven:
   - DELETE: elimina el nivel identificado por el número de nivel `id`.
 
 - `/aprende/niveles`
-  - GET: trae la lista completa de usuarios
+  - GET: trae la lista completa de niveles
   - POST: registra un nuevo nivel a partir de un texto tipo json con la siguiente estructura
+
+- `/aprende/niveles-ligeros`
+  - GET: trae la lista completa de niveles, sin pedir de la base de datos las imágenes.
 
 ### Tipos de datos
 ```
@@ -75,6 +78,8 @@ Nivel {
 - `/aprende/lecciones`:
   - GET: traer todas las lecciones. El parametro `nivel` puede ser usado para filtrar la búsqueda.
   - POST: crear una nueva lección.
+- `/aprende/lecciones-ligeras`:
+  - GET: traer todas las lecciones, sin pedir la imagen desde la base de datos. El parametro `nivel` puede ser usado para filtrar la búsqueda.
 - `/aprende/lecciones/<id: String>`:
   - GET: traer la lección identificada por id.
   - PUT: actualizar la lección indicada.
@@ -121,42 +126,3 @@ LeccionOut {
         ignorarDieres   : Boolean!
     }
 ```
-## Puntajes
-- `/aprende/puntajes`
-  - GET: traer todos los puntajes en las lecciones. Con los parametros de petición `usuario` y/o `nLeccion` se puede filtrar la búsqueda.
-  - POST: crea un nuevo puntaje.
-  - DELETE: elimina los puntajes identificados por los parámetros `usuario` y/o `nLeccion`; al menos uno de los filtros es necesario.
-- `/aprende/puntajes/<id:String>
-  - GET: trae el puntaje identificado por el id indicado.
-  - DELETE: elimina el puntaje indicado.
-  - 
-- `/aprende/puntajes/numeros`
-  - GET: dado el parametro de peticion `usuario`, retorna los puntajes del usuario indicado. Se puede filtrar la búsqueda con los parámetros de petición `nivel` y/o `nLeccion`.
-  - 
-
-### Tipos de datos
-
-```
-PuntajeIn {
-        usuario     : String!
-        precision   : Float!
-        cpme        : Int!
-        segundos    : Int!
-        fecha       : String
-        id_leccion  : String!
-    }
-```
-````
-PuntajeOut {
-        id          : String!
-        usuario     : String!
-        precision   : Float!
-        cpme        : Int!
-        segundos    : Int!
-        fecha       : String
-        id_leccion  : String!
-    }
-````
-
-
-
